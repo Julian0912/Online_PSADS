@@ -50,20 +50,45 @@ def selection_sort(ul):
         ul[pos_of_max], ul[tar_pos] = ul[tar_pos], ul[pos_of_max]
 
 
-def insertion_sort(ul):
+def insertion_sort(ul, start=0, gap=1):
     """插入排序
+
+    gap: 子数组的索引间隔，例数组array[5]，gap=2，则两个子数组的索引为0,2,4和1,3
+    start: 子数组的第一个索引，如上例为0和1
+
+    **仅作插入排序时不需要修改默认值，在希尔排序内使用时需要修改默认值**
+    **注释在解释时使用了默认值**
+
+    :param ul: List[int]
+    :param start: int
+    :param gap: int
+    :return: List[int]
+    """
+    for index in range(start + gap, len(ul), gap):  # 假设数组第一个值为一个有序数组，则从第二个值开始
+        cur = ul[index]  # 存储当前值
+        pos = index  # 向前跑动的游标
+        while pos >= gap and ul[pos - gap] > cur:  # 在游标到头之前，如果游标前一个值比当前值大
+            ul[pos] = ul[pos - gap]  # 就把前一个值后移一位（覆盖了当前值，留出了一个空位）
+            pos -= gap  # 游标前移一位
+        ul[pos] = cur  # 空位会一直向后移动，直到游标前一个值比当前值小，则把当前值插入空位
+        # 注：空位实际还是有值
+
+
+def shell_sort(ul):
+    """希尔排序
+
+    先将数组分割成几个子数组，每个分别作插入排序，
+    然后减小gap，当gap减小到1时，即是一次完整的插入排序，
+    但因为之前的操作已经使数组有序度提高，所以在实际时间上会节省一些
 
     :param ul: List[int]
     :return: List[int]
     """
-    for index in range(1, len(ul)):  # 假设数组第一个值为一个有序数组，则从第二个值开始
-        cur = ul[index]  # 存储当前值
-        pos = index  # 向前跑动的游标
-        while pos > 0 and ul[pos - 1] > cur:  # 在游标到头之前，如果游标前一个值比当前值大
-            ul[pos] = ul[pos - 1]  # 就把前一个值后移一位（覆盖了当前值，留出了一个空位）
-            pos -= 1  # 游标前移一位
-        ul[pos] = cur  # 空位会一直向后移动，直到游标前一个值比当前值小，则把当前值插入空位
-        # 注：空位实际还是有值
+    sublist_count = len(ul) // 2  # 这只是希尔排序分割数组的其中一种方式
+    while sublist_count > 0:
+        for start_pos in range(sublist_count):
+            insertion_sort(ul, start_pos, sublist_count)
+        sublist_count //= 2  # 重点是让gap减小到1
 
 
 if __name__ == '__main__':
@@ -74,5 +99,6 @@ if __name__ == '__main__':
     # bubble_sort(unordered_ls)
     # short_bubble_sort(nearly_sorted_ls)
     # selection_sort(check_ls2)
-    insertion_sort(unordered_ls)
+    # insertion_sort(unordered_ls)
+    shell_sort(unordered_ls)
     print(unordered_ls)
