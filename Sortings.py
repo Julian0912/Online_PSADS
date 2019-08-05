@@ -8,7 +8,6 @@ def bubble_sort(ul):
     """冒泡排序
 
     :param ul: List[int]
-    :return: List[int]
     """
     for p in range(len(ul) - 1, 0, -1):  # 一共循环n-1次
         for i in range(p):
@@ -20,7 +19,6 @@ def short_bubble_sort(ul):
     """短冒泡排序，对于有序度高的数组更省时间
 
     :param ul: List[int]
-    :return: List[int]
     """
     exchanges = True
     p = len(ul) - 1
@@ -39,7 +37,6 @@ def selection_sort(ul):
     """选择排序
 
     :param ul: List[int]
-    :return: List[int]
     """
     for tar_pos in range(len(ul) - 1, 0, -1):  # tar_pos是此次pass中最大值应该在的位置
         pos_of_max = 0  # 假设此次pass最大值的位置为索引0
@@ -62,7 +59,6 @@ def insertion_sort(ul, start=0, gap=1):
     :param ul: List[int]
     :param start: int
     :param gap: int
-    :return: List[int]
     """
     for index in range(start + gap, len(ul), gap):  # 假设数组第一个值为一个有序数组，则从第二个值开始
         cur = ul[index]  # 存储当前值
@@ -82,7 +78,6 @@ def shell_sort(ul):
     但因为之前的操作已经使数组有序度提高，所以在实际时间上会节省一些
 
     :param ul: List[int]
-    :return: List[int]
     """
     sublist_count = len(ul) // 2  # 这只是希尔排序分割数组的其中一种方式
     while sublist_count > 0:
@@ -95,7 +90,6 @@ def merge_sort(ul):
     """归并排序
 
     :param ul: List[int]
-    :return: List[int]
     """
     if len(ul) > 1:  # 对于长度小于等于1的数组不需要排序，也是递归地截至条件
         mid = len(ul) // 2
@@ -125,6 +119,28 @@ def merge_sort(ul):
             k += 1
 
 
+def quick_sort(ul):
+    """快速排序
+
+    返回新数组
+
+    :param ul: List[int]
+    :return List[int]
+    """
+    if len(ul) <= 1:
+        return ul
+    mid = len(ul) // 2
+    temp = sorted([ul[0], ul[mid], ul[-1]])  # 用于寻找最佳基数
+    pivot = temp[1]
+    left, right = [], []
+    for i in ul:  # 排除pivot本身
+        if i < pivot:
+            left.append(i)
+        elif i > pivot:
+            right.append(i)
+    return quick_sort(left) + [pivot] + quick_sort(right)
+
+
 if __name__ == '__main__':
     unordered_ls = [54, 26, 93, 17, 77, 31, 44, 55, 20]
     # check_ls = [19, 1, 9, 7, 3, 10, 13, 15, 8, 12]
@@ -135,5 +151,7 @@ if __name__ == '__main__':
     # selection_sort(check_ls2)
     # insertion_sort(unordered_ls)
     # shell_sort(unordered_ls)
-    merge_sort(unordered_ls)
-    print(unordered_ls)
+    # merge_sort(unordered_ls)
+    sorted_ls = quick_sort(unordered_ls)
+    # print(unordered_ls)
+    print(sorted_ls)
