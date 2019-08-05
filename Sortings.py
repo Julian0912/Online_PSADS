@@ -91,6 +91,40 @@ def shell_sort(ul):
         sublist_count //= 2  # 重点是让gap减小到1
 
 
+def merge_sort(ul):
+    """归并排序
+
+    :param ul: List[int]
+    :return: List[int]
+    """
+    if len(ul) > 1:  # 对于长度小于等于1的数组不需要排序，也是递归地截至条件
+        mid = len(ul) // 2
+        left = ul[:mid]
+        right = ul[mid:]
+        merge_sort(left)  # 此处递归调用后可以认为left子数组已经有序
+        merge_sort(right)  # 同上
+        l, r, k = 0, 0, 0
+        while l < len(left) and r < len(right):
+            # 此处选出left和right中小的那个依次覆盖原数组，加等号有利于稳定性
+            if left[l] <= right[r]:
+                ul[k] = left[l]
+                l += 1
+            else:
+                ul[k] = right[r]
+                r += 1
+            k += 1
+        # 然后两个数组中必定有一个数组剩余至少一个值（最大的那些）
+        # 循环只会执行一个
+        while l < len(left):
+            ul[k] = left[l]
+            l += 1
+            k += 1
+        while r < len(right):
+            ul[k] = right[r]
+            r += 1
+            k += 1
+
+
 if __name__ == '__main__':
     unordered_ls = [54, 26, 93, 17, 77, 31, 44, 55, 20]
     # check_ls = [19, 1, 9, 7, 3, 10, 13, 15, 8, 12]
@@ -100,5 +134,6 @@ if __name__ == '__main__':
     # short_bubble_sort(nearly_sorted_ls)
     # selection_sort(check_ls2)
     # insertion_sort(unordered_ls)
-    shell_sort(unordered_ls)
+    # shell_sort(unordered_ls)
+    merge_sort(unordered_ls)
     print(unordered_ls)
