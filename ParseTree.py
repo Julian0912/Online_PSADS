@@ -4,50 +4,7 @@
 #
 import operator
 from pythonds.basic import Stack
-
-
-class BinaryTree(object):
-    """二叉树
-
-    利用递归思想，只保存根结点、左子树和右子树
-    """
-
-    def __init__(self, element=None):  # 确保可以是空树
-        self.root = element  # 此处的root存储的是根结点内的元素
-        self.left_child = None  # 左右子树实际上也是BinaryTree类型
-        self.right_child = None
-
-    def is_empty(self):
-        return self.root is None
-
-    def add_root(self, e):
-        if not self.is_empty():
-            raise ValueError('the binary tree has already had a root')
-        self.root = e
-
-    def insert_left(self, e):
-        """插入左孩子，如果已存在左孩子，则将左孩子作为新结点的左孩子"""
-        if self.is_empty():
-            raise ValueError('the binary tree does not have a root')
-        if isinstance(e, BinaryTree):
-            subtree = e
-        else:
-            subtree = BinaryTree(e)
-        if self.left_child is not None:
-            subtree.left_child = self.left_child
-        self.left_child = subtree
-
-    def insert_right(self, e):
-        """插入右孩子，如果已存在右孩子，则将右孩子作为新结点的右孩子"""
-        if self.is_empty():
-            raise ValueError('the binary tree does not have a root')
-        if isinstance(e, BinaryTree):
-            subtree = e
-        else:
-            subtree = BinaryTree(e)
-        if self.right_child is None:
-            subtree.right_child = self.right_child
-        self.right_child = subtree
+from BinaryTree import BinaryTree
 
 
 def build_parse_tree(expr: str):
